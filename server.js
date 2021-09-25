@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 var path = require('path');
-const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const db = require('./models');
 var cors = require('cors');
@@ -20,21 +19,21 @@ var database = db.mongoose.connect(process.env.MongoURL, {
     useUnifiedTopology: true, 
     useCreateIndex: true 
 });
-database = mongoose.connection;
+database = db.mongoose.connection;
 
 database.on("error", (error) => {
     console.log(error);
 });
 database.once("open", () => {
-    initial();
+    // initial();
     console.log("Connected to Database");
 });
 
 
 app.use('/api', routes);
-app.use('/public', express.static(path.resolve(__dirname, 'public')));
-app.get('/', (request, response) => {
-    res.send("welcome to store server");
+// app.use('/public', express.static(path.resolve(__dirname, 'public')));
+app.get('/', (req, res) => {
+  res.send("welcome to store server");
 });
 app.listen(port, () => {
     console.log("app is listening on", port);

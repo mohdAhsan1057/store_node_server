@@ -7,21 +7,20 @@ const fileExtensionType = ["jpg", "jpeg", "png"];
 
 module.exports = {
     register: async (req, res) => {
+        
         let data = req.body;
         let { password } = data;
         let { role } = data;
         let { contact } = data;
         delete data.password;
         delete data.roles;
-        delete data.contacts;
+        delete data.contact;
         let hashPassword = bcrypt.hashSync(password, 10);
-        let contacts;
-        let roles
         try {
             contacts = await new db.contact(contact).save();
             console.log(contacts);
         } catch (e) {
-            return 0;
+            throw e;
         }
         try {
             roles = await db.role.findOne({ name: role });
@@ -131,7 +130,6 @@ module.exports = {
         let user = await db.user.findById(req.userId);
         let contactId = user.contactID;
         let updateContact = await db.contact.updateOne({ _id: contactId }, conTact);
-        
             console.log('ali');
             let newUser = {
                 name: name,
@@ -144,8 +142,6 @@ module.exports = {
                 console.log(updateUserses);
             let uploadingfile = await utils.uploadFile(filePhoto, fileUrl);
             console.log(uploadingfile);
-        
-
 
     },
 }
